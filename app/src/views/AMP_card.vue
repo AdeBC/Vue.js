@@ -1,94 +1,198 @@
 <template>
-  <div class="AMP_card">
+ <div class="AMP_card">
     <el-row>
-      <el-col :span="4" :offset="18">
-        <el-button type="primary"
-                   icon="el-icon-download">
-          Export
-        </el-button>
-      </el-col>
       <el-col :span="22" :offset="1">
-<!--        <el-descriptions class="margin-top" title="Basic information" border=true column="1">-->
-<!--          <el-descriptions-item label="Accession">{{desc.Accession}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Sequence">{{desc.Sequence}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="MW">{{desc.MW}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Length">{{desc.Length}}</el-descriptions-item>>-->
-<!--          <el-descriptions-item label="Molar extinction">{{desc.Molar_extinction}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Aromaticity">{{desc.Aromaticity}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="GRAVY">{{desc.GRAVY}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Instability index">{{desc.Instability_index}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Isoeletric point">{{desc.Isoeletric_point}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Charget at pH 7.0">{{desc.Charget_at_pH_7}}</el-descriptions-item>-->
-<!--          <el-descriptions-item label="Secondary structure">{{desc.sec_struct}}</el-descriptions-item>-->
-<!--        </el-descriptions>-->
-        <el-carousel :interval="4000" type="card" height="400px" autoplay=false loop=false>
-          <el-carousel-item v-for="item in graphs" :key="item">
-            <div style="text-align: center">
-              <el-link :href="item.graph"
-                       target="_blank"
-                       type="primary">
-                <h3 class="medium">{{ item.name }}</h3>
-              </el-link>
-            </div>
-            <el-image :src="item.graph"></el-image>
-          </el-carousel-item>
-        </el-carousel>
+        <el-container>
+<!--          <sidebar-menu :menu="menu" />-->
+          <el-aside>
+            Aside
+          </el-aside>
+          <el-main>
+<!--            <el-table-column prop="Accession" label="Accession" width="200%"></el-table-column>-->
+            <span><h1>Antimicrobial peptide: {{ AMP.Accession }}</h1></span>
 
+            <div style="text-align: end">
+              <el-button class="button" type="primary">Export</el-button>
+            </div>
+            <h3>General information</h3>
+            <el-card class="box-card">
+                <div style="text-align: left">
+                  <ul>
+                    <li><span class="info-item">Family</span>: {{ AMP.Info.Family }}</li>
+                    <li><span class="info-item">Length</span>: {{ AMP.Info.Length }}</li>
+                    <li><span class="info-item">Molecular weight</span>: {{ AMP.Info.MW }}</li>
+                    <li><span class="info-item">Sequence</span>: {{ AMP.Info.Sequence }}</li>
+                    <li><span class="info-item">Source (meta)genome (with hyperlink)</span>: {{ AMP.Info.Metagenomes }}</li>
+                  </ul>
+                </div>
+            </el-card>
+            <br/>
+
+            <h3>Distribution</h3>
+            <el-card class="box-card">
+              <div style="height: 350px;">
+                <div class="info" style="height: 15%">
+                  <span>Center: {{ center }}</span>
+                  <span>Zoom: {{ zoom }}</span>
+                  <span>Bounds: {{ bounds }}</span>
+                </div>
+                <l-map
+                    style="height: 80%; width: 100%"
+                    :zoom="zoom"
+                    :center="center"
+                    @update:zoom="zoomUpdated"
+                    @update:center="centerUpdated"
+                    @update:bounds="boundsUpdated"
+                >
+                  <l-tile-layer :url="url"></l-tile-layer>
+                </l-map>
+              </div>
+            </el-card>
+
+            <h3>Secondary structure</h3>
+            <el-card class="box-card">
+              <div style="text-align: left">
+                <ul>
+                  <li><span class="info-item">Alpha helix</span>: {{ AMP.Struct.helix }}</li>
+                  <li><span class="info-item">Beta turn</span>: {{ AMP.Struct.turn }}</li>
+                  <li><span class="info-item">Beta sheet</span>: {{ AMP.Struct.sheet }}</li>
+                </ul>
+              </div>
+            </el-card>
+
+            <h3>Biochemical properties</h3>
+            <el-card class="box-card">
+              <div style="text-align: left">
+                <ul>
+                  <li><span class="info-item">Charge at pH 7.0</span>: {{ AMP.Info.Charget_at_pH_7 }}</li>
+                  <li><span class="info-item">Isoeletric point</span>: {{ AMP.Info.Isoeletric_point }}</li>
+                  <li><span class="info-item">Molar extinction</span>: {{ AMP.Info.Molar_extinction }}</li>
+                  <li><span class="info-item">Aromaticity</span>: {{ AMP.Info.Aromaticity }}</li>
+                  <li><span class="info-item">GRAVY</span>: {{ AMP.Info.GRAVY }}</li>
+                  <li><span class="info-item">Instability index</span>: {{ AMP.Info.Instability_index }}</li>
+                </ul>
+              </div>
+            </el-card>
+
+            <el-carousel :interval="4000" type="card" height="400px" :autoplay=false :loop=false>
+              <el-carousel-item v-for="item in AMP.graphs" :key="item">
+                <div style="text-align: center">
+                  <el-link :href="item.graph"
+                           target="_blank"
+                           type="primary">
+                    <h3 class="medium">{{ item.name }}</h3>
+                  </el-link><br/>
+                  Figure captions.
+                </div>
+                <el-image :src="item.graph"></el-image>
+              </el-carousel-item>
+            </el-carousel>
+          </el-main>
+        </el-container>
       </el-col>
     </el-row>
+
   </div>
 </template>
 
 <style>
+  .info-item {
+    font-weight: bold;
+    color: #063d7c;
+    font-size: large;
+  }
     .el-tabs__item {
         font-size: 17px;
+    }
+    .el-aside {
+      background-color: #D3DCE6;
+      color: #333;
+      text-align: center;
+      line-height: 200px;
+    }
+
+    .el-main {
+      color: #333;
+      text-align: center;
     }
 </style>
 
 <script>
+import {LMap, LTileLayer} from "@vue-leaflet/vue-leaflet";
+import "leaflet/dist/leaflet.css";
   export default {
     name: 'AMP_card',
-
+    components: {
+      LMap,
+      LTileLayer,
+    },
     data() {
       return {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        zoom: 3,
+        center: [47.413220, -1.219482],
+        bounds: null,
+        menu: [
+          {
+            header: 'Main Navigation',
+            hiddenOnCollapse: true
+          },
+          {
+            href: '/',
+            title: 'Dashboard',
+            icon: 'fa fa-user'
+          },
+          {
+            href: '/charts',
+            title: 'Charts',
+            icon: 'fa fa-chart-area',
+            child: [
+              {
+                href: '/charts/sublink',
+                title: 'Sub Link'
+              }
+            ]
+          }
+        ],
         ampId: '',
-        desc: {
-          Accession: 'AMP10.000_000',
-          Sequence: 'KKVKSIFKKALAMMGENEVKAWGIGIK',
-          MW: '3.01 kDa',
-          Length: 27,
-          Molar_extinction: [5500, 5500],
-          Aromaticity: 0.07407407407407407,
-          GRAVY: -0.11111111111111117,
-          Instability_index: -18.348148148148148,
-          Isoeletric_point: 10.12554931640625,
-          Charget_at_pH_7: 0.758729531142717,
-          sec_struct:{
+        AMP: {
+            Accession: 'AMP10.000_000',
+            Info: {
+            Sequence: 'KKVKSIFKKALAMMGENEVKAWGIGIK',
+            MW: '3.01 kDa',
+            Length: 27,
+            Family: 'SPHERE-III.000-000',
+            Metagenomes: ['sample1', 'sample2', 'sample3'],
+              Molar_extinction: [5500, 5500],
+            Aromaticity: 0.07407407407407407,
+            GRAVY: -0.11111111111111117,
+            Instability_index: -18.348148148148148,
+            Isoeletric_point: 10.12554931640625,
+            Charget_at_pH_7: 0.758729531142717,
+            },
+            Struct: {
             helix: 29.629629629629626,
             turn: 18.51851851851852,
             sheet: 29.629629629629626
-          }
+            },
+            graphs: [
+            {
+              name: 'aa composition diviation',
+              graph: require('./../assets/images/aa_composition_deviation_AMP10.000_000.png'),
+            },{
+              name: 'aindex_z',
+              graph: require('./../assets/images/AMP10.000_000_aindex_z.png')
+            },{
+              name: 'boman z',
+              graph: require('./../assets/images/AMP10.000_000_boman_z.png')
+            },{
+              name: 'charge z',
+              graph: require('./../assets/images/AMP10.000_000_charge_z.png')
+            },{
+              name: 'hmoment z',
+              graph: require('./../assets/images/AMP10.000_000_hmoment_z.png')
+            }],
       },
-        graphs: [
-          {
-            name: 'aa composition diviation',
-            graph: require('./../assets/images/aa_composition_deviation_AMP10.000_000.png'),
-          },{
-            name: 'aindex_z',
-            graph: require('./../assets/images/AMP10.000_000_aindex_z.png')
-          },{
-            name: 'boman z',
-            graph: require('./../assets/images/AMP10.000_000_boman_z.png')
-          },{
-            name: 'charge z',
-            graph: require('./../assets/images/AMP10.000_000_charge_z.png')
-          },{
-            name: 'hmoment z',
-            graph: require('./../assets/images/AMP10.000_000_hmoment_z.png')
-          }
-      ],
-      }
-    },
 
     computed: {
         shadow: function () {
@@ -112,6 +216,15 @@
     },
 
     methods: {
+      zoomUpdated (zoom) {
+        this.zoom = zoom;
+      },
+      centerUpdated (center) {
+        this.center = center;
+      },
+      boundsUpdated (bounds) {
+        this.bounds = bounds;
+      },
         clickSearch() {
             if (this.ampId !== "") {
                 this.type = "danger";
@@ -317,6 +430,7 @@
                 myChart.clear();
             }
         }
+    }}
     }
   }
 </script>

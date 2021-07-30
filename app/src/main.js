@@ -7,6 +7,8 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import imageZoom from 'vue-image-zoomer'
+//import VueSidebarMenu from 'vue-sidebar-menu'
+//import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 
 
 router.beforeEach((to, from, next) => {
@@ -26,6 +28,7 @@ const app = createApp(
 app.use(router)
 app.use(ElementPLus, {locale})
 app.use(VueAxios, axios)
+//app.use(VueSidebarMenu)
 const ImageZoom = require('vue-image-zoomer').default
 app.component('image-zoom', ImageZoom)
 axios.defaults.baseURL = 'http://127.0.0.1:8080'

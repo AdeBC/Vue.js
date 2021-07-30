@@ -38,32 +38,6 @@
 <script>
 export default {
   name: "About",
-  data() {
-    return {
-      dataStatsExamples: [{
-        type: 'Families',
-        num_AMPs: '3555 (example data)',
-        example: 'SHERE-III.000-000',
-      },{
-        type: 'Hosts',
-        num_AMPs: '30 (example data)',
-        example: 'host a (human)'
-      },{
-        type: 'Environments',
-        num_AMPs: '128 (example data)',
-        example: 'root:host-associated:animal'
-      }],
-    }
-  },
-  methods: {
-    handleFamilyDetail(accession){
-      console.log('goto', '/family?accession='+accession)
-      window.open('/family?accession='+accession, '_blank')
-    },
-    handleBrowse(by){
-      window.open('/browse_data?by='+by, '_blank')
-    }
-  }
 }
 </script>
 

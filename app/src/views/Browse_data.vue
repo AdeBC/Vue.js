@@ -9,7 +9,34 @@
         <br/>
         <el-tabs type="card" @tab-click="handleTabClick">
           <el-tab-pane label="AMPs">
-            under developing...
+            <el-table
+                :data="AMPs_data"
+                stripe
+                style="width: 100%">
+              <el-table-column
+                  label="Accession"
+                  width="150">
+                <template #default="props">
+                  <el-button @click="handleFamilyDetail(props.row.accession)" type="text" size="small">
+                    {{ props.row.accession }}
+                  </el-button>
+                </template>
+              </el-table-column>
+              <el-table-column
+                  label="Family"
+                  width="150">
+                <template #default="props">
+                  <el-button @click="handleFamilyDetail(props.row.family)" type="text" size="small">
+                    {{ props.row.family }}
+                  </el-button>
+                </template>
+              </el-table-column>
+              <el-table-column
+                  prop="pep_sequence"
+                  label="Peptide sequence"
+                  width="1080">
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
           <el-tab-pane label="Families" lazy=true>
             <el-table
@@ -67,28 +94,74 @@ export default {
   data() {
     return {
       url: require('../assets/logo.png'),
+      AMPs_data: [{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      },{
+        accession: 'AMP10.000-000',
+        family: 'SPHERE-III.000-000',
+        pep_sequence: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMT',
+      }
+      ],
       families_data: [{
-        accession: 'SHERE-III.000-000',
+        accession: 'SPHERE-III.000-000',
         num_AMPs: 'nnnn',
         consensus_seq: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGL'
       }, {
-        accession: 'SHERE-III.000-000',
+        accession: 'SPHERE-III.000-000',
         num_AMPs: 'nnnn',
         consensus_seq: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGL'
       }, {
-        accession: 'SHERE-III.000-000',
+        accession: 'SPHERE-III.000-000',
         num_AMPs: 'nnnn',
         consensus_seq: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGL'
       }, {
-        accession: 'SHERE-III.000-000',
+        accession: 'SPHERE-III.000-000',
         num_AMPs: 'nnnn',
         consensus_seq: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGL'
       }, {
-        accession: 'SHERE-III.000-000',
+        accession: 'SPHERE-III.000-000',
         num_AMPs: 'nnnn',
         consensus_seq: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGL'
       }, {
-        accession: 'SHERE-III.000-000',
+        accession: 'SPHERE-III.000-000',
         num_AMPs: 'nnnn',
         consensus_seq: 'FFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGLTRERVRQIKEKAIRRLRQSSFFGIGQQEMTLEEIGDKFGL'
       }],

@@ -32,14 +32,14 @@
             <h3>Distribution</h3>
             <el-card class="box-card">
               <el-row>
-                <Plotly :data="AMP.distribution.geo.data" :layout="AMP.distribution.geo.layout"></Plotly>
+                <Plotly :data="methods.GeoPlotData()" :layout="methods.GeoPlotLayout()"></Plotly>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <div><Plotly :data="AMP.distribution.env"/></div>
+                  <div><Plotly :data="methods.EnvPlotData()"/></div>
                 </el-col>
                 <el-col :span="12">
-                  <div><Plotly :data="AMP.distribution.env"/></div>
+                  <div><Plotly :data="methods.HostPlotData()"/></div>
                 </el-col>
               </el-row>
 <!--              <BarPlot/>-->
@@ -189,67 +189,6 @@ import Plotly from "../components/Plotly"
             turn: 18.51851851851852,
             sheet: 29.629629629629626
           },
-          distribution: {
-            geo: {
-              data: [{
-                type: 'scattergeo',
-                mode: 'markers',
-                locations: ['FRA', 'DEU', 'RUS', 'ESP', 'CHN'],
-                marker: {
-                  size: [20, 30, 15, 10, 40],
-                  color: [100,100,100,100,100],
-                  cmin: 0,
-                  cmax: 100,
-                  colorscale: 'Reds',
-                  // colorbar: {
-                  //   title: 'Distribution',
-                  //   ticksuffix: '%',
-                  //   showticksuffix: 'last'
-                  // },
-                  line: {
-                    color: 'black'
-                  }
-                },
-              }],
-              layout: {
-                // 'title': {
-                //   'text': 'Geographical distribution',
-                //   'side': 'bottom',
-                // },
-                'geo': {
-                  'scope': 'global',
-                  'resolution': 50,
-                  'showland': true,
-                  'landcolor': 'rgb(217, 217, 217)',
-                  'subunitwidth': 1,
-                  'countrywidth': 1,
-                  'subunitcolor': 'rgb(255,255,255)',
-                  'countrycolor': 'rgb(255,255,255)'
-                },
-                'margin': {
-                  'l': 30,
-                  'r': 30,
-                  't': 30,
-                  'b': 30
-                }
-              },
-            },
-            env: [{   //fix here.
-              x: [20, 14, 23, 12, 13, 24, 34, 4, 3, 5, 13, 2, 4],
-              y: ['built-environment', 'wastewater', 'freshwater', 'soil', 'human gut', 'human skin', 'human oral',
-                'human nose', 'human vagina', 'mouse gut', 'pig gut', 'dog gut', 'cat gut'],
-              orientation: 'h',
-              marker: {
-                color: 'rgba(55,128,191,0.6)',
-                // color: ['red', 'green', 'black'],
-                width: 0.3
-              },
-              type: 'bar'
-            }],
-            host: {
-
-            }
-          },
           features: [{
             name: 'EZenergy',
             graph: require('./../assets/images/EZenergy_AMP10.000_000.png')
@@ -300,7 +239,82 @@ import Plotly from "../components/Plotly"
         },
 
         methods: {
-
+          GeoPlotData(){
+            let geoData = {FRA: 20, DEU: 10, RUS: 15, ESP: 25, CHN: 30} // fix here
+            return [{
+              type: 'scattergeo',
+              mode: 'markers',
+              locations: Object.keys(geoData),
+              marker: {
+                size: Object.values(geoData),
+                color: [100,100,100,100,100],
+                cmin: 0,
+                cmax: 100,
+                colorscale: 'Reds',
+                // colorbar: {
+                //   title: 'Distribution',
+                //   ticksuffix: '%',
+                //   showticksuffix: 'last'
+                // },
+                line: {
+                  color: 'black'
+                }
+              },
+            }]
+          },
+          GeoPlotLayout(){
+            return {
+              // 'title': {
+              //   'text': 'Geographical distribution',
+              //   'side': 'bottom',
+              // },
+              'geo': {
+                'scope': 'global',
+                'resolution': 50,
+                'showland': true,
+                'landcolor': 'rgb(217, 217, 217)',
+                'subunitwidth': 1,
+                'countrywidth': 1,
+                'subunitcolor': 'rgb(255,255,255)',
+                'countrycolor': 'rgb(255,255,255)'
+              },
+              'margin': {
+                'l': 30,
+                'r': 30,
+                't': 30,
+                'b': 30
+              }
+            }
+          },
+          EnvPlotData(){
+            let envData = {built_environment: 20, wastewater: 10,
+              animal_gut: 25, soil: 0, freshwater: 0} // fix here
+            return [{
+              x: Object.values(envData),
+              y: Object.keys(envData),
+              orientation: 'h',
+              marker: {
+                color: 'rgba(55,128,191,0.6)',  // change the colors
+                // color: ['red', 'green', 'black'],
+                width: 0.3
+              },
+              type: 'bar'
+            }]
+          },
+          HostPlotData(){
+            let hostData = {human: 35, mouse: 25, pig: 30, dog: 3, cat: 5} // fix here
+            return [{
+              x: Object.values(hostData),
+              y: Object.keys(hostData),
+              orientation: 'h',
+              marker: {
+                color: 'rgba(55,128,191,0.6)', // change the colors
+                // color: ['red', 'green', 'black'],
+                width: 0.3
+              },
+              type: 'bar'
+            }]
+          }
         }
       }
     }

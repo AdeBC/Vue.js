@@ -24,6 +24,7 @@ const app = createApp(
     }
 )
 
+
 app.use(router)
 app.use(ElementPLus, {locale})
 app.use(VueAxios, axios)

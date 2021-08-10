@@ -37,7 +37,7 @@ const routes = [
         component: AMP_card,
         meta:{
             title: 'AMPSphere: AMP'
-        }
+        },
     },
     {
         path: '/api',

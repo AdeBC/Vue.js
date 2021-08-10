@@ -5,15 +5,37 @@
         <el-container>
 <!--          <sidebar-menu :menu="menu" />-->
           <el-aside>
-            <el-menu :default-openeds="['1', '3']" style="position: fixed; top:300px;">
-              <el-submenu index="1">
-                <template #title><i class="el-icon-message"></i>Basic information</template>
+<!--            <ul style="position: fixed; top:300px; line-height: 30px; text-align: left">-->
+<!--              <li><a class="nav-section" href="#general_info">General information</a></li>-->
+<!--              <li><a class="nav-section" href="#distribution">Distribution</a></li>-->
+<!--              <ul>-->
+<!--                <li><a class="nav-subsection" href="#global-distribution">Global</a></li>-->
+<!--                <li><a class="nav-subsection" href="#distribution-across-habitats">Habitats</a></li>-->
+<!--                <li><a class="nav-subsection" href="#distribution-across-hosts">Hosts</a></li>-->
+<!--              </ul>-->
+<!--              <li><a class="nav-section" href="#properties">Biochemical properties</a></li>-->
+<!--            </ul>-->
+            <el-menu style="position: fixed; top:300px; line-height: 30px; text-align: left; width:250px">
+              <el-submenu>
+                <template #title>
+                  <i class="el-icon-info"></i>
+                <a class="nav-section" href="#general_info">General information</a>
+              </template>
               </el-submenu>
-              <el-submenu index="1">
-                <template #title><i class="el-icon-message"></i>Distribution</template>
+              <el-submenu>
+                <template #title>
+                  <i class="el-icon-info"></i>
+                  <a class="nav-section" href="#distribution">Distribution</a>
+                </template>
+                <el-menu-item><a class="nav-subsection" href="#global-distribution">Global</a></el-menu-item>
+                <el-menu-item><a class="nav-subsection" href="#distribution-across-habitats">Habitats</a></el-menu-item>
+                <el-menu-item><a class="nav-subsection" href="#distribution-across-hosts">Hosts</a></el-menu-item>
               </el-submenu>
-              <el-submenu index="1">
-                <template #title><i class="el-icon-message"></i>Biochemical properties</template>
+              <el-submenu>
+                <template #title>
+                  <i class="el-icon-info"></i>
+                  <a class="nav-section" href="#properties">Properties</a>
+                </template>
               </el-submenu>
             </el-menu>
           </el-aside>
@@ -21,11 +43,11 @@
 <!--            <el-table-column prop="Accession" label="Accession" width="200%"></el-table-column>-->
             <span>
               <h1>Antimicrobial peptide: {{ AMP.Accession }}
-                <el-button class="button" type="primary" icon="el-icon-download" circle></el-button>
+                <el-button class="button" @click="methods.downloadCurrPage()" type="primary" icon="el-icon-download" circle></el-button>
               </h1>
             </span>
 
-            <h3>General information</h3>
+            <h3 id="general_info">General information</h3>
             <el-card class="box-card">
                 <div style="text-align: left">
                   <el-col :span="16">
@@ -83,28 +105,30 @@
                 </div>
             </el-card>
 
-            <h3>Distribution</h3>
+            <h3 id="distribution">Distribution</h3>
             <el-card class="box-card">
               <el-row>
+                <h4 id="global-distribution">Global distribution</h4>
                 <Plotly :data="methods.GeoPlotData()" :layout="methods.GeoPlotLayout()"></Plotly>
               </el-row>
               <el-row>
                 <el-col :span="12">
-<!--                  <div><Plotly :data="methods.EnvPlotData()"/></div>-->
-                  <div><Plotly :data="methods.SunburstData()" :layout="methods.SunburstLayout()"/></div>
+                  <h4 id="distribution-across-habitats">Across habitats</h4>
+                  <div><Plotly :data="methods.EnvPlotData()" :layout="methods.EnvPlotLayout()"/></div>
                 </el-col>
                 <el-col :span="12">
-<!--                  <div><Plotly :data="methods.HostPlotData()"/></div>-->
-                  <div><Plotly :data="methods.SunburstData()" :layout="methods.SunburstLayout()"/></div>
+                  <h4 id="distribution-across-hosts">Across hosts</h4>
+                  <div><Plotly :data="methods.HostPlotData()" :layout="methods.HostPlotLayout()"/></div>
                 </el-col>
               </el-row>
             </el-card>
 
 
-            <h3>Biochemical properties</h3>
+            <h3 id="properties">Biochemical properties</h3>
             <el-card class="box-card">
               <el-col :span="12">
               <div style="text-align: left">
+<!--                More spaces-->
                 <ul>
                   <li><span class="info-item">Charge at pH 7.0</span>: {{ AMP.Info.Charget_at_pH_7 }}</li>
                   <li><span class="info-item">Isoeletric point</span>: {{ AMP.Info.Isoeletric_point }}</li>
@@ -116,6 +140,14 @@
               </div>
               </el-col>
               <el-col :span="5" :offset="3">
+                <div style="text-align: center">
+                  <el-link :href="AMP.helicalwheel"
+                           target="_blank"
+                           type="primary">
+                    <span class="medium">Helical wheel</span>
+                  </el-link>
+                  <br/>
+                </div>
                 <div style="align-content: center; text-align: center; width: 200px">
                   <el-tooltip class="item" effect="dark" content="Figure caption" placement="right">
                     <el-image :src="AMP.helicalwheel"></el-image>
@@ -140,6 +172,7 @@
                     </el-tooltip>
                   </el-carousel-item>
                 </el-carousel>
+<!--                tips to switch between graphs-->
               </el-col>
               <el-col :span="12">
                 <h4>Comparison with the entire database</h4>
@@ -173,6 +206,14 @@
     color: #063d7c;
     font-size: large;
   }
+  .nav-section {
+    font-size: medium;
+    font-weight: bold
+  }
+  .nav-subsection{
+    font-size: small;
+    font-weight: normal;
+  }
     .el-tabs__item {
         font-size: 17px;
     }
@@ -193,18 +234,14 @@
 // import BubbleMap from "./../components/BubbleMap"
 // import BarPlot from "../components/BarPlot";
 import Plotly from "../components/Plotly"
-// import {LMap, LTileLayer} from "@vue-leaflet/vue-leaflet";
-// import "leaflet/dist/leaflet.css";
+//import { tsvParse } from 'd3-dsv'
+import * as d3 from "d3-dsv";
 
 
-  export default {
+export default {
     name: 'AMP_card',
     components: {
-      // BarPlot,
-      // BubbleMap,
       Plotly
-      // LMap,
-      // LTileLayer,
     },
     data() {
       return {
@@ -341,104 +378,63 @@ import Plotly from "../components/Plotly"
               values: Object.values(strucData),
               labels: Object.keys(strucData),
               marker:{
-                // sequential colors
-                // colors: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#8c2d04'],
-                // diverging colors
-                // colors: ['#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#c7eae5', '#80cdc1', '#35978f', '#01665e'],
-                // quanlitative colors
-                colors: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666'],
+                colors: this.ColorPalette('quanlitative'),
               },
               textinfo: "label+percent",
               insidetextorientation: "radial"}]
           },
           GeoPlotData(){
-            let geoData = {FRA: 20, DEU: 10, RUS: 15, ESP: 25, CHN: 30} // fix here
+            let GeoString = "n\tenvironmental_features\tlatitude\tlongitude\tMO-level-I\n" +
+              "10\thuman-associated habitat [ENVO:00009003]\t39.9\t116.25\tTerrestrial\n" +
+              "70\thuman-associated habitat [ENVO:00009003]\t37.27567620000001\t-104.65581230000001\tTerrestrial\n" +
+              "10\tanimal-associated habitat [ENVO:00006776]\t52.13\t5.29\tTerrestrial\n" +
+              "10\thuman-associated habitat [ENVO:00009003]\t34.5\t109.5\tTerrestrial\n" +
+              "10\thuman-associated habitat [ENVO:00009003]\t39.9\t116.25\tTerrestrial\n" +
+              "10\thuman-associated habitat [ENVO:00009003]\t47.3\t106.15\tTerrestrial\n" +
+              "30\thuman-associated habitat [ENVO:00009003]\t56.21285989999999\t9.3005073\tTerrestrial\n" +
+              "10\thuman-associated habitat [ENVO:00009003]\t38.626999999999995\t-90.1994\tTerrestrial\n" +
+              "10\thuman-associated habitat [ENVO:00009003]\t30.3\t120.2\tTerrestrial\n" +
+              "30\thuman-associated habitat [ENVO:00009003]\t56.21285989999999\t9.3005073\tTerrestrial"
+            let geoData = d3.tsvParse(GeoString, d3.autoType)
+            console.log(geoData)
             return [{
               type: 'scattergeo',
-              mode: 'markers',
-              locations: Object.keys(geoData),
+              //locationmode: 'USA-states',
+              lat: this.UnpackCol(geoData, 'latitude'),
+              lon: this.UnpackCol(geoData, 'longitude'),
               marker: {
-                size: Object.values(geoData),
-                // sequential colors
-                color: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#8c2d04'],
-                // diverging colors
-                // color: ['#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#c7eae5', '#80cdc1', '#35978f', '#01665e'],
-                // quanlitative colors
-                // color: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666'],
-                cmin: 0,
-                cmax: 100,
-                colorscale: '#01665e',
-                // colorbar: {
-                //   title: 'Distribution',
-                //   ticksuffix: '%',
-                //   showticksuffix: 'last'
-                // },
+                size: this.UnpackCol(geoData, 'n'),
+                color: this.MapColors(this.UnpackCol(geoData, 'MO-level-I'), this.ColorPalette('quanlitative')),
                 line: {
-                  color: 'black'
+                  color: 'black',
+                  size: 2
                 }
               },
             }]
           },
           GeoPlotLayout(){
             return {
-              // 'title': {
-              //   'text': 'Geographical distribution',
-              //   'side': 'bottom',
-              // },
-              'geo': {
-                'scope': 'global',
-                'resolution': 50,
-                'showland': true,
-                'landcolor': 'rgb(217, 217, 217)',
-                'subunitwidth': 1,
-                'countrywidth': 1,
-                'subunitcolor': 'rgb(255,255,255)',
-                'countrycolor': 'rgb(255,255,255)'
+              showlegend: false,
+              geo: {
+                scope: 'global',
+
+                resolution: 50,
+                showland: true,
+                landcolor: 'rgb(217, 217, 217)',
+                subunitwidth: 1,
+                countrywidth: 1,
+                subunitcolor: 'rgb(255,255,255)',
+                countrycolor: 'rgb(255,255,255)'
               },
-              'margin': {
-                'l': 30,
-                'r': 30,
-                't': 30,
-                'b': 30
+              margin: {
+                l: 30,
+                r: 30,
+                t: 30,
+                b: 30
               }
             }
           },
           EnvPlotData(){
-            let envData = {built_environment: 20, wastewater: 10, animal_host: 25, plant_host: 10, soil: 0, freshwater: 0} // fix here
-            return [{
-              x: Object.values(envData),
-              y: Object.keys(envData),
-              orientation: 'h',
-              marker: {
-                // diverging colors
-                // color: ['#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#c7eae5', '#80cdc1', '#35978f', '#01665e'],
-                // quanlitative colors
-                // color: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666'],
-                width: 0.3
-              },
-              type: 'bar'
-            }]
-          },
-          HostPlotData(){
-            let hostData = {Human: 14, Mouse: 5, Pig: 3, Dog: 3, Cat: 5, Zea_mays: 6, Sus_scrofa: 5, Termitidae: 10} // fix here
-            return [{
-              x: Object.values(hostData),
-              y: Object.keys(hostData),
-              orientation: 'h',
-              marker: {
-                // sequential colors
-                color: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#8c2d04'],
-                // diverging colors
-                // color: ['#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#c7eae5', '#80cdc1', '#35978f', '#01665e'],
-                // quanlitative colors
-                // color: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666'],
-                width: 0.3,
-                alpha: 0.5
-              },
-              type: 'bar'
-            }]
-          },
-          SunburstData(){
             return [{
               type: "sunburst",
               labels: ['Terrestrial', "Aquatic", "Anthropogenic", "Host-associated", "Soil",
@@ -456,19 +452,73 @@ import Plotly from "../components/Plotly"
                 line: {
                   width: 2
                 }
-                },
+              },
             }]
           },
-          SunburstLayout(){
+          EnvPlotLayout(){
             return {
               margin: {l: 40, r: 40, b: 40, t: 40},
-              // sequential colors
-              // sunburstcolorway: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#8c2d04'],
-              // diverging colors
-              // sunburstcolorway: ['#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#c7eae5', '#80cdc1', '#35978f', '#01665e'],
-              // quanlitative colors
-              sunburstcolorway: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666'],
+              sunburstcolorway: this.ColorPalette('quanlitative')
             };
+          },
+          HostPlotData(){
+            return [{
+              type: "sunburst",
+              labels: ['Terrestrial', "Aquatic", "Anthropogenic", "Host-associated", "Soil",
+                "Freshwater", "Wastewater", "Animal host", "Plant host", "Marine",
+                "Spring", "Groundwater", "Algal host", "Built-environment"],
+              parents: ["", "", "", "", "Terrestrial",
+                "Aquatic", "Aquatic", "Host-associated", "Host-associated", "Aquatic",
+                "Aquatic", "Aquatic", "Host-associated", "Anthropogenic"],
+              values:  [0, 0, 0, 0, 12,
+                10, 2, 6, 6, 4,
+                4, 5, 10, 14],
+              outsidetextfont: {size: 20, color: "#377eb8"},
+              leaf: {opacity: 0.4},
+              marker: {
+                line: {
+                  width: 2
+                }
+              },
+            }]
+          },
+          HostPlotLayout(){
+            return {
+              margin: {l: 40, r: 40, b: 40, t: 40},
+              sunburstcolorway: this.ColorPalette('quanlitative')
+           };
+          },
+          MapColors(categories, colors){
+            const levels = [...new Set(categories)]
+            console.log(levels)
+            const mapping = []
+            for (let i=0; i<=categories.length; i++){
+              mapping[levels[i]] = colors[i]
+            }
+            return categories.map(function (cate) {
+              return mapping[cate]
+            })
+          },
+          ColorPalette(kind){
+            if (kind === 'sequential'){
+              return ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#8c2d04']
+            }
+            else if (kind === 'diverging'){
+              return ['#8c510a', '#bf812d', '#dfc27d', '#f6e8c3', '#c7eae5', '#80cdc1', '#35978f', '#01665e']
+            }
+            else if (kind === 'quanlitative'){
+              return ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666']
+            }
+            else{
+              console.log('please set the `kind` option for color palette.')
+              return null
+            }
+          },
+          UnpackCol(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+          },
+          downloadCurrPage(){
+            print()
           }
         }
       }

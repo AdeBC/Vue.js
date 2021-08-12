@@ -1,4 +1,5 @@
 <template>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <div id="AMPSphere">
     <el-container>
       <el-header height="200px">
@@ -19,16 +20,8 @@
             </template>
           </el-input>
             Examples:
-            <el-link href="/AMP?ampId=AMP10.000_000"
-                     target="_blank"
-                     type="primary">
-              AMP10.000_000
-            </el-link>,
-            <el-link href="/family?accession=SPHERE-III.001_396"
-                     target="_blank"
-                     type="primary">
-              SPHERE-III.001_396
-            </el-link>
+            <el-link href="/AMP?ampId=AMP10.000_000" target="_blank" type="primary">AMP10.000_000</el-link>,
+            <el-link href="/family?accession=SPHERE-III.001_396" target="_blank" type="primary">SPHERE-III.001_396</el-link>
           </div>
           <div class="menu">
             <el-menu mode="horizontal" :default-active="activeMenuItem" :router="true">

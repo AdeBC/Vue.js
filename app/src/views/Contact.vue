@@ -11,6 +11,9 @@
         <p>AMPsphere also is discussed in a forum where users can suggest improvements, issues, ongoing projects, etc: <a href="https://groups.google.com/g/ampsphere-users">Go to our community now!</a></p>
         <p>This is a project hosted by the <a href="big-data-biology.org/">Big Data Biology Research Group</a>, visit us at this link!</p>
         <hr />
+
+<!--     TODO two columns: names go to the left side, and affiliation goes to the right side.-->
+
         <h3 id="contact-us-if-you-have-issues-or-suggestions">Contact us if you have issues or suggestions:</h3>
         <p>To direct communication:</p>
         <ul>

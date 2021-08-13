@@ -74,7 +74,7 @@
                         </el-tooltip>
                       </li>
                       <el-table :data="AMP.relationships" height="250" style="width: 100%">
-                        <el-table-column prop="GMSC" label="GMSC"/>
+                        <el-table-column prop="GMSC" label="Genes"/>
                         <el-table-column prop="Source" label="Sample/Genome"/>
                         <el-table-column prop="taxid" label="Taxonomy id"/>
                         <el-table-column prop="sciname" label="Scientific name"/>
@@ -104,6 +104,12 @@
                 <el-col :span="12">
                   <h4 id="distribution-across-habitats">Across habitats</h4>
                   <div><Plotly :data="methods.EnvPlotData()" :layout="methods.EnvPlotLayout()"/></div>
+<!--                  <div id="myModal" class="modal">-->
+<!--                    <div class="modal-content">-->
+<!--                      <span class="close">&times;</span>-->
+<!--                      <iframe height="800px" width="100%" src="../assets/kronaTest.html" style="border:none;"></iframe>-->
+<!--                    </div>-->
+<!--                  </div>-->
                 </el-col>
                 <el-col :span="12">
                   <h4 id="distribution-across-hosts">Across hosts</h4>
@@ -145,7 +151,8 @@
                 </div>
                 <div style="align-content: center; text-align: center;">
                   <el-image :src="AMP.helicalwheel"></el-image>
-<!--                    inplacely generate helicalwheel using echarts-->
+<!--                  TODO https://observablehq.com/@smsaladi/helical-wheel-visualization-wip-2019_05_10-->
+<!--                    TODO inplacely generate helicalwheel using echarts-->
 <!--                    https://github.com/ecomfe/vue-echarts/blob/5.x/README.zh_CN.md-->
 <!--                    https://echarts.apache.org/examples/zh/editor.html?c=graph-circular-layout-->
                 </div>
@@ -164,15 +171,15 @@
               </el-row>
             </el-card>
             <br/>
-            <el-card>
-              <el-row>
-                <el-col>
-                  <h4 id="comparisons">Comparison with entire database</h4>
-                  <div><Plotly :data="methods.comparisonGraphData()" :layout="methods.comparisonGraphLayout()"></Plotly></div>
-                  Z-score comparison of (a) aliphatic index, (b) Boman index, (c) hydrophobic moment, (d) instability index - instaindex, (e) isoelectric point, and (f) charge using the average of complete training set separated by non-antimicrobial peptides (gray), antimicrobial peptides (black) and dots representing the peptide as a red star.
-                </el-col>
-              </el-row>
-            </el-card>
+<!--            <el-card>-->
+<!--              <el-row>-->
+<!--                <el-col>-->
+<!--                  <h4 id="comparisons">Comparison with entire database</h4>-->
+<!--                  <div><Plotly :data="methods.comparisonGraphData()" :layout="methods.comparisonGraphLayout()"></Plotly></div>-->
+<!--                  Z-score comparison of (a) aliphatic index, (b) Boman index, (c) hydrophobic moment, (d) instability index - instaindex, (e) isoelectric point, and (f) charge using the average of complete training set separated by non-antimicrobial peptides (gray), antimicrobial peptides (black) and dots representing the peptide as a red star.-->
+<!--                </el-col>-->
+<!--              </el-row>-->
+<!--            </el-card>-->
           </el-main>
         </el-container>
       </el-col>
@@ -374,24 +381,35 @@ export default {
           }
         },
         EnvPlotData(){
-          return [{
-            type: "sunburst",
-            labels: ['Terrestrial', "Aquatic", "Anthropogenic", "Host-associated", "Soil",
-              "Freshwater", "Wastewater", "Animal host", "Plant host", "Marine",
-              "Spring", "Groundwater", "Algal host", "Built-environment"],
-            parents: ["", "", "", "", "Terrestrial",
-              "Aquatic", "Aquatic", "Host-associated", "Host-associated", "Aquatic",
-              "Aquatic", "Aquatic", "Host-associated", "Anthropogenic"],
-            values:  [0, 0, 0, 0, 12,
-              10, 2, 6, 6, 4,
-              4, 5, 10, 14],
-            outsidetextfont: {size: 20, color: "#377eb8"},
-            leaf: {opacity: 0.4},
-            marker: {
-              line: {
-                width: 2
-              }
-            },
+          return [
+          //     {
+          //   type: "sunburst",
+          //   labels: ['Terrestrial', "Aquatic", "Anthropogenic", "Host-associated", "Soil",
+          //     "Freshwater", "Wastewater", "Animal host", "Plant host", "Marine",
+          //     "Spring", "Groundwater", "Algal host", "Built-environment"],
+          //   parents: ["", "", "", "", "Terrestrial",
+          //     "Aquatic", "Aquatic", "Host-associated", "Host-associated", "Aquatic",
+          //     "Aquatic", "Aquatic", "Host-associated", "Anthropogenic"],
+          //   values:  [0, 0, 0, 0, 12,
+          //     10, 2, 6, 6, 4,
+          //     4, 5, 10, 14],
+          //   outsidetextfont: {size: 20, color: "#377eb8"},
+          //   leaf: {opacity: 0.4},
+          //   marker: {
+          //     line: {
+          //       width: 2
+          //     }
+          //   },
+          //   branchvalues: 'total',
+          // },
+            {
+              "type": "sunburst",
+              "labels": ["Eve", "Cain", "Seth", "Enos", "Noam", "Abel", "Awan", "Enoch", "Azura"],
+              "parents": ["", "Eve", "Eve", "Seth", "Seth", "Eve", "Eve", "Awan", "Eve" ],
+              "values":  [65, 14, 12, 10, 2, 6, 6, 4, 4],
+              "leaf": {"opacity": 0.4},
+              "marker": {"line": {"width": 2}},
+              "branchvalues": 'total'
           }]
         },
         EnvPlotLayout(){
@@ -444,10 +462,10 @@ export default {
                 direction: 'left', type: 'buttons', pad: {r: 10, t: 10},
                 showactive: true, x: 0.5, y: 1.2, yanchor: 'top', xanchor: 'center',
                 buttons: [
-                  {method: 'restyle', args: ['visible', this.makeTraceVisible(0, 12)], label: 'EZenergy'},
+                  {method: 'restyle', args: ['visible', this.makeTraceVisible(0, 12)], label: 'EZ energy'},
                   {method: 'restyle', args: ['visible', this.makeTraceVisible(1, 12)], label: 'Flexibility'},
-                  {method: 'restyle', args: ['visible', this.makeTraceVisible(2, 12)], label: 'Hydrophobicity Parker'},
-                  {method: 'restyle', args: ['visible', this.makeTraceVisible(3, 12)], label: 'SA AMPs'}
+                  {method: 'restyle', args: ['visible', this.makeTraceVisible(2, 12)], label: 'Hydrophobicity - Parker'},
+                  {method: 'restyle', args: ['visible', this.makeTraceVisible(3, 12)], label: 'Surface Accessibility'}
                 ]
               }],
             // annotations: [{

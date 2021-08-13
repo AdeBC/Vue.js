@@ -45,19 +45,23 @@
 <!--            <el-col :span="2">-->
 <!--              <img src="./../assets/logo/B-DNA.svg" style="width: 15px; height: 50px"/>-->
 <!--            </el-col>-->
+            This is AMPSphere, a database of prokaryotic AMP sequences predicted from thousands of genomes and metagenomes.
+            The almost 1 M candidate AMP sequences available here are distributed as follows:
+            <br/>
+            <br/>
             <el-col :span="10">
 <!--              <h4>Derived from</h4>-->
+<!--              genomes and metagenomes aligned to the left, numbers aligned to the right.-->
               <el-descriptions column="1" border="border">
-                <el-descriptions-item label="Genomes">
+                <el-descriptions-item label="Genomes: ">
                   {{ dataStats.Genomes }}
                 </el-descriptions-item>
-                <el-descriptions-item label="Metagenomes">
+                <el-descriptions-item label="Metagenomes: ">
                   {{ dataStats.Metagenomes }}
                 </el-descriptions-item>
               </el-descriptions>
             </el-col>
             <el-col :span="10" :offset="4">
-              <h3></h3>
               <el-descriptions column="1" border="border">
                 <el-descriptions-item label="AMPs">
                   {{ dataStats.AMPs }}

@@ -11,6 +11,7 @@
             <el-tab-pane label="AMPSphere" lazy=true>
               <!--        <h1 style="text-align: center">Global prokaryotic AMPs survey</h1>-->
               <el-col :offset="1" :span="10">
+<!--                TODO go to `about page`-->
                 <h2>Overview</h2>
                 Antimicrobial peptides (AMPs) are small proteins with lengths ranging from 10 to 100
                 residues of amino acids, which disturb microbial growth and can be produced by a wide
